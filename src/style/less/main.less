@@ -1,0 +1,227 @@
+/*colors*/
+@adwa-purple: #603e95;
+@adwa-green: #009da1;
+@adwa-yellow: #fac22b;
+@adwa-red: #d7255d;
+@adwa-gold: #cfb53b;
+@adwa-black-background: #09091a;
+
+/*widths*/
+@mobile-min: 425px;
+
+
+/* containers*/
+body,html{
+	padding: 0;
+	margin: 0 auto;
+	width: 100%;
+	height: 100%;
+	display: block;
+
+}
+.wrapper{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  margin: 0;
+}
+.row{
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	margin: 0;
+}
+#mainView{
+	max-width: calc(100% - 46px);
+}
+.mainNav
+{
+	position: fixed;
+  z-index: 1;
+  top: 0;
+  right: 0;
+
+	a{
+		text-decoration: none;
+		display: flex;
+	  flex-direction: column;
+	  justify-content: center;
+	}
+
+	a:hover, .selected{
+		color: #fff;
+	}
+
+	.options {
+		margin: 0 auto;
+		background: red;
+		width: 100%;
+		padding-top: 20px;
+		height: 100vh;
+		.tooltiptext{
+			visibility: hidden;
+		  width: 120px;
+		  background-color: black;
+		  color: #fff;
+		  text-align: center;
+		  border-radius: 6px;
+		  padding: 5px 0;
+
+		  /* Position the tooltip */
+		  position: relative;
+		  z-index: 1;
+		  bottom: -25px;
+		  right: 126px;
+			:hover{
+
+			}
+		}
+		a:hover .tooltiptext{
+			 visibility: visible;
+		}
+		&-bottom{
+			padding-top: 30vh;
+		}
+	}
+}
+.selectedNav{
+	color: #fff !important;
+}
+
+#logoContainer {
+    width: 45px;
+    height: 45px;
+    margin: 0 auto;
+    padding: 8px;
+}
+#logo{
+	width: 100%;
+	margin: 0 auto;
+}
+
+.mainView{
+	min-height: 100%;
+	padding: 0;
+
+}
+
+
+icon{
+	div{
+		width: calc(15px + 0.5vw);
+		margin: 0 auto;
+	}
+	path{
+		stroke: @adwa-gold;
+		fill: @adwa-gold;
+	}
+}
+.vgap{
+	padding-top: 30px;
+}
+.container {
+  display: none;
+  cursor: pointer;
+}
+
+//task manager style
+.tasks{
+	width: 75%;
+	display: flex;
+	justify-content: space-evenly;
+}
+.task{
+	&-page-content{
+		display: flex;
+	}
+	&-preview{
+		width: 25%;
+		.administrative{
+			color:  @adwa-purple;
+		}
+		.communication{
+			color:  @adwa-yellow;
+		}
+		.development{
+			color:  @adwa-red;
+		}
+		.teaching{
+			color:  @adwa-green;
+		}
+
+	}
+	border: 1px solid #eee;
+  width: 24%;
+
+	&-item-listed{
+	  margin: 2px;
+		margin-bottom: 7px;
+	  background-color: #f5f5f5;
+	  border-radius: 12px;
+		overflow: hidden;
+		&:hover, &:active, &:focus{
+			outline: none;
+			border: 2px solid gray;
+		}
+		p.id{
+			margin: 0 auto;
+		  text-align: center;
+			color: white;
+		}
+		.administrative{
+			background: @adwa-purple;
+		}
+		.communication{
+			background: @adwa-yellow;
+		}
+		.development{
+			background: @adwa-red;
+		}
+		.teaching{
+			background: @adwa-green;
+		}
+		p.title{
+			padding: 8px 15px;
+		}
+	}
+	&-selected{
+		p.title{
+			font-size: 17px;
+		  font-weight: bold;
+		  text-decoration: underline;
+		}
+		p.date, p.by{
+			margin: 0 auto;
+		  font-size: 12px;
+		  color: #666;
+		}
+		p.disc{
+			margin-top: 10px;
+		}
+	}
+	h2{
+		border-bottom: 2px solid #eee;
+		padding: 8px 15px;
+	  margin: 2px;
+	}
+
+}
+
+//pages
+.page{
+	display: flex;
+
+	&-sub-navigation{
+		flex: 250px 0 0;
+    padding: 35px 6px 6px 6px;
+		&-top, &-bottom{
+			height: 25vh;
+	    display: flex;
+	    flex-direction: column;
+	    justify-content: center;
+	    background: red;
+			border-radius: 12px;
+    	margin: 12px;
+		}
+	}
+}
