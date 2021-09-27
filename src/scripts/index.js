@@ -1,4 +1,4 @@
-var app = angular.module("main", ["ngAnimate","ngRoute", "ngSanitize", "ui.bootstrap"]);
+var app = angular.module("main", ["ngAnimate","ngRoute", "ngSanitize", 'ngAria', 'ngMaterial', 'ngMessages']);
 app.factory("Data", ['$http',
     function($http){
       let serviceBase = "./API/";
@@ -37,7 +37,7 @@ app.config(function($routeProvider) {
         controller: "defaultCtrl"
     })
     .when("/dail-in", {
-      templateUrl : "./src/pages/dail-in.html",
+      templateUrl : "./src/pages/dial-in.html",
       controller: "dailInCtrl"
     })
     .when("/history/", {
@@ -50,7 +50,7 @@ app.config(function($routeProvider) {
     })
     .when("/404", {
       templateUrl : "./pages/fourOfour.html",
-      controller: "brwCtrl"
+      controller: "defaultCtrl"
     })
     /** .when("/resources", {
       templateUrl : "./pages/resources.html",
@@ -59,32 +59,9 @@ app.config(function($routeProvider) {
     .otherwise({
         redirectTo: '/404'
     });
-}).run(function ($rootScope, $location, Data) {
-    $rootScope.$on("$routeChangeStart", function (event, next, current) {
-        $rootScope.authenticated = false;
-        Data.get('session').then(function (results) {
-            if (results.uid) {
-                $rootScope.authenticated = true;
-                $rootScope.uid = results.uid;
-                $rootScope.name = results.name;
-                $rootScope.email = results.email;
-            } else {
-                var nextUrl = next.$$route.originalPath;
-                if (nextUrl == '/signup' || nextUrl == '/login') {
-
-                } else {
-                    $location.path("/login");
-                }
-            }
-        });
-    });
-});
+})
 
 app.controller('defaultCtrl', ['$scope', '$http', '$sce', '$location', function($scope, $http, $sce, $location){
-
-}]);
-
-app.controller('authCtrl', function ($scope, $rootScope, $routeParams, $location, $http, $sce, Data) {
   //sanitizing function
   $scope.trustSrc = function(src){
     return $sce.trustAsResourceUrl(src);
@@ -104,56 +81,62 @@ app.controller('authCtrl', function ($scope, $rootScope, $routeParams, $location
   $scope.isActive = function(route){
     return route === $location.path();
   }
+}]);
+app.controller('dailInCtrl', ['$scope', '$http', '$sce', '$location', '$filter', function($scope, $http, $sce, $location, $filter){
+  $scope.startbrew = false;
+  $scope.brewAttempts = [];
+  $scope.hasBrewAttempts = false;
+  console.log($scope.brewAttempts.length);
 
-    //initially set those objects to null to avoid undefined error
-    $scope.login = {};
-    $scope.signup = {};
-    $scope.doLogin = function (user) {
-        Data.post('login', {
-            user: user
-        }).then(function (results) {
-            //Data.toast(results);
-            if (results.status == "success") {
-                $location.path('/user-space/dashboard');
-            }
-        });
-    };
-    $scope.signup = {email:'',password:'',fname:'',lname:''};
-    $scope.signUp = function (user) {
-        Data.post('signUp', {
-            user: user
-        }).then(function (results) {
-            //Data.toast(results);
-            if (results.status == "success") {
-                $location.path('/user-space/dashboard');
-            }
-        });
-    };
-    $scope.logout = function () {
-        Data.get('logout').then(function (results) {
-            //Data.toast(results);
-            $location.path('login');
-        });
+  $scope.startBrew = function(coffee, brewer){
+    //save coffee info into the scope to be used by other forms
+    $scope.coffee = coffee;
+
+    //set up coffee ID based on name and rest date (EX: Ethiopia Laayoo 8 Days -> EthLaa8) This string ID will be used to distinguish common brews
+    let coffeeName = $scope.coffee.name.split(' ');
+    let coffeeID = "";
+    for(let i = 0; i < coffeeName.length; i++){
+      coffeeID = coffeeID + coffeeName[i].substring(0,3).toLowerCase();
     }
-});
+    let bDate = new Date();
+    let restDate = Math.floor(bDate.getTime() - coffee.roastDate.getTime());
+    restDate = restDate / (1000 * 60 * 60 * 24);
+    coffeeID = (coffeeID + restDate).split('.')[0];
+    console.log(coffeeID);
 
-//task-manager controller
-app.controller('tasksCtrl', function($scope, $http, Data){
-  console.log("Tasklist");
-  $scope.notSelected = true;
-  Data.get('tasks')
-  .then((results)=>
-  {
-    $scope.tasks = results.tasks;
-    console.log($scope.tasks);
-  });
+    //update roastDate formatting
+    $scope.coffee.roastDate = $filter('date')
+        (coffee.roastDate, 'dd/MM/yy');
 
-  $scope.preview = function(task){
-    $scope.selectedTask = task
-    console.log($scope.selectedTask);
-    $scope.notSelected = false;
+    //add brewer to scope and start brewing
+    $scope.brewer = brewer;
+    $scope.startbrew = true;
+    console.log("start brew: " + $scope.startbrew);
+    console.log($scope.coffee);
+    console.log($scope.brewer);
   }
-});
+
+  $scope.addBrewAttempt = function(brew){
+    let b = JSON.parse(JSON.stringify(brew));
+
+    b.brewDate = $filter('date')
+        (new Date(), 'dd/MM/yy');
+
+    b.daysSinceRD = (b.brewDate - $scope.coffee.roastDate)  / 1000 / 60 / 60 / 24;
+    console.log(b);
+    $scope.brewAttempts.push(b)
+    console.log($scope.brewAttempts);
+    $scope.hasBrewAttempts = true;
+  }
+
+}]);
+app.controller('hstCtrl', ['$scope', '$http', '$sce', '$location', function($scope, $http, $sce, $location){
+
+}]);
+app.controller('brwCtrl', ['$scope', '$http', '$sce', '$location', function($scope, $http, $sce, $location){
+
+}]);
+
 
 //pages controller
 app.controller('pageCtrl', function($scope, $http, $routeParams, Data){
@@ -166,57 +149,9 @@ app.controller('pageCtrl', function($scope, $http, $routeParams, Data){
   console.log($scope.page);
 });
 
-
-
-app.directive("mainNav", function(){
-  return {
-    restrict: 'E',
-    templateUrl: "./pages/main_nav.html"
-  }
+//filter to reverse the order of any array
+app.filter('reverse', function() {
+  return function(items) {
+    return items.slice().reverse();
+  };
 });
-
-app.directive("icon", function() {
-    return {
-      restrict: 'E',
-      scope: {
-        val: "@"
-      },
-      link: function(scope, element, attrs){
-        scope.getContentUrl = function(){
-          return './src/img/'+attrs.val+'.svg';
-        }
-      },
-        template : '<div ng-include="getContentUrl()"></div>'
-    }
-});
-app.directive('focus', function() {
-    return function(scope, element) {
-        element[0].focus();
-    }
-});
-
-app.directive('passwordMatch', [function () {
-    return {
-        restrict: 'A',
-        scope:true,
-        require: 'ngModel',
-        link: function (scope, elem , attrs,control) {
-            var checker = function () {
-
-                //get the value of the first password
-                var e1 = scope.$eval(attrs.ngModel);
-
-                //get the value of the other password
-                var e2 = scope.$eval(attrs.passwordMatch);
-                if(e2!=null)
-                return e1 == e2;
-            };
-            scope.$watch(checker, function (n) {
-
-                //set the form control to valid if both
-                //passwords are the same, else invalid
-                control.$setValidity("passwordNoMatch", n);
-            });
-        }
-    };
-}]);

@@ -1,0 +1,6 @@
+{
+  "watchFolder": "src/style/less",
+  "outputFolder": "src/style/css",
+  "mainFile": "main.less",
+  "minified": true
+}

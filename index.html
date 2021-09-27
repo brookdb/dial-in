@@ -11,15 +11,49 @@
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-animate.min.js"></script>
   <!-- scripy src="https://cdnjs.cloudflare.com/ajax/libs/angular-cookies/1.8.2/angular-cookies.min.js"></script-->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router-default/0.0.6/angular-ui-router-default.min.js"></script>
-  <script src="https://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.5.0.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js"></script>
+
+  <!-- Angular Material Library -->
+  <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
   <link href="https://netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="./src/style/css/glider.css">
   <link rel="stylesheet" href="./src/style/css/main.min.css" type="text/css">
 </head>
 
 <body ng-app="main" ng-controller="defaultCtrl">
-  <div  ng-view>
+  <div id="mainNav" class="mainNav">
+    <div class="header">
+      <div class="titleContainer">
+        <!-- a href="#/!" class="button" id="logoContainer"><img id="logo" alt="DAIL-IN Logo" src="./src/img/logo.png"></a -->
+        <a href="#/!" class="button" id="title">DIAL-IN</a>
+      </div>
+
+      <div class="wrapper">
+        <div id="container" class="container" ng-click="showOpts()">
+          <div class="bar1"></div>
+          <div class="bar2"></div>
+          <div class="bar3"></div>
+        </div>
+      </div>
+    </div>
+    <div id="options"class="options">
+      <a class="nav-link" ng-click="showOpts()" href="#!/dail-in" ui-sref="dail-in">Dail-in</a>
+      <a class="nav-link" ng-click="showOpts()" href="#!/history" ui-sref="history">History</a>
+    </div>
+  <div class="row">
+    <!-- footer>
+      <a href="https://twitter.com/" target="_blank">
+        <icon alt="Twitter" val="twitter"></icon>
+      </a>
+      <a href="mailto:info@adwa-digital.org">
+        <icon alt="Email" val="email"></icon>
+      </a>
+    </footer -->
   </div>
+</div>
+<div  id = "mainView" class="mainView" ng-view>
+</div>
   <script type="text/javascript" src="./src/scripts/index.js"></script>
 </body>
 </html>
