@@ -94,15 +94,17 @@ app.controller('dailInCtrl', ['$scope', '$http', '$sce', '$location', '$filter',
 
     //set up coffee ID based on name and rest date (EX: Ethiopia Laayoo 8 Days -> EthLaa8) This string ID will be used to distinguish common brews
     let coffeeName = $scope.coffee.name.split(' ');
-    let coffeeID = "";
+    let coffeeID = brewer.Type;//0 -> Espresso, 1 -> pour Over
     for(let i = 0; i < coffeeName.length; i++){
       coffeeID = coffeeID + coffeeName[i].substring(0,3).toLowerCase();
     }
     let bDate = new Date();
     let restDate = Math.floor(bDate.getTime() - coffee.roastDate.getTime());
     restDate = restDate / (1000 * 60 * 60 * 24);
-    coffeeID = (coffeeID + restDate).split('.')[0];
-    console.log(coffeeID);
+
+    $scope.coffee.restDate = ("" + restDate).split('.')[0];
+    coffeeID = (coffeeID + $scope.coffee.restDate);
+    $scope.coffee.id = coffeeID;
 
     //update roastDate formatting
     $scope.coffee.roastDate = $filter('date')
@@ -111,22 +113,31 @@ app.controller('dailInCtrl', ['$scope', '$http', '$sce', '$location', '$filter',
     //add brewer to scope and start brewing
     $scope.brewer = brewer;
     $scope.startbrew = true;
-    console.log("start brew: " + $scope.startbrew);
     console.log($scope.coffee);
-    console.log($scope.brewer);
   }
 
   $scope.addBrewAttempt = function(brew){
     let b = JSON.parse(JSON.stringify(brew));
 
+    b.brewer = $scope.brewer;
     b.brewDate = $filter('date')
         (new Date(), 'dd/MM/yy');
 
-    b.daysSinceRD = (b.brewDate - $scope.coffee.roastDate)  / 1000 / 60 / 60 / 24;
     console.log(b);
     $scope.brewAttempts.push(b)
     console.log($scope.brewAttempts);
     $scope.hasBrewAttempts = true;
+  }
+
+  $scope.commpleteDial = function(bestBrewIndex){
+    let d ={
+      brewAttempts: $scope.brewAttempts,
+      coffeeID: $scope.coffee.id,
+      brewer: $scope.brewer,
+      bestBrewIndex: bestBrewIndex
+    }
+    console.log(d);
+
   }
 
 }]);

@@ -1,18 +1,14 @@
 <div class="section">
   <div class="column-1">
-    <h2>fill out all the information to get started with dialing in.</h2>
-  </div>
-</div>
-<div class="section">
-  <div class="column-1">
     <form name="dial-in-form" ng-if="!startbrew">
       <h3>Coffee Information</h3>
       <input type="text" class="textInput" name="name" value="Coffee Name" ng-model="coffee.name" placeholder="Name" required>
       <div class="buttonGroup">
-        <input type="radio" ng-model="coffee.blendType" value="Single-Origin" >Single Origin
-        <input type="radio" ng-model="coffee.blendType" value="Blend" >Blend
+        <input type="radio" ng-model="coffee.blendType" value="0" >Single Origin
+        <input type="radio" ng-model="coffee.blendType" value="1" >Blend
       </div>
-      <span>Roast Date: <input type="date" id="roastDate" name="Roast Date" ng-model="coffee.roastDate" placeholder="2021-09-14" required> </span>
+      <p class="inputLabel">Roast Date:</p>
+      <input type="date" id="roastDate" class="textInput" name="Roast Date" ng-model="coffee.roastDate" placeholder="Roast-Date"  onfocus="(this.type='date')" required>
 
       <h4>Flavor Profile</h4>
        <div class="textGroup flavor-profile">
@@ -22,58 +18,66 @@
        </div>
        <h3>Brewer Info</h3>
        <div class="buttonGroup">
-         <input type="radio" ng-model="brewer.Type" value="espresso" >Espresso
-         <input type="radio" ng-model="brewer.Type" value="pourOver" >Pour Over
+         <input type="radio" ng-model="brewer.Type" value="0" >Espresso
+         <input type="radio" ng-model="brewer.Type" value="1" >Pour Over
        </div>
        <input type="text" class="textInput" name="BrewerName" value="Brewer Name" placeholder="Brewer Name" ng-model="brewer.name" >
-      <button ng-click="startBrew(coffee,brewer)">Start Brewing</button>
+      <div class="button-wrapper">
+        <button class="button-1" ng-click="startBrew(coffee,brewer)">Start Brewing</button>
+      </div>
     </form>
     <div class="brew-setting" ng-if="startbrew">
       <h2>{{coffee.name}}</h2>
-      <div class="column-3">
+      <div class="column-2">
         <h4>Roast Date: {{coffee.roastDate}}</h4>
-        <h4>{{coffee.blendType}}</h4>
+        <h4>{{coffee.blendType  == 0 ? 'Single Origin' : 'Blend'}}</h4>
       </div>
-      <div class="column-3">
-        <h3>Tasting Notes</h3>
-        <p>{{coffee.tastingNote1}}</p>
-        <p>{{coffee.tastingNote2}}</p>
-        <h3>Mouth Feel</h3>
-        <p>{{coffee.mouthFeel}}</p>
-      </div>
-      <div class="column-3">
-        <h3>Brewing Method</h3>
-        <p>{{brewer.Type}}</p>
+      <div class="column-2">
+        <h4>Brewing Method</h4>
+        <p>{{brewer.Type == 0 ? 'Espresso' : 'Pour Over'}}</p>
         <p>{{brewer.name}}</p>
       </div>
+      <div class="column-2">
+        <h4>Tasting Notes</h4>
+        <p>{{coffee.tastingNote1}}</p>
+        <p>{{coffee.tastingNote2}}</p>
+      </div>
+      <div class="column-2">
+        <h4>Mouth Feel</h4>
+        <p>{{coffee.mouthFeel}}</p>
+      </div>
+
     </div>
 
     <form class="brew-attempt" ng-if="startbrew">
       <div class="wrapper">
-        <div class="brew-attempt-setting column-2">
-          <p>Coffee to Water Ratio</p>
+        <div class="brew-attempt-setting column-1">
+          <p>Recipe</p>
           <span>
             <input type="number" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01" class="textInput" name="coffeeDose" value="Coffee Dose" ng-model="brew.coffeeDose" placeholder="Dose (g)" required>
             /
             <input type="number" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01" class="textInput" name="liquidOut" value="liquid Out" ng-model="brew.liquidOut" placeholder="Liquid (g)" required>
+            @
+            <input type="number" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.1" class="textInput"name="grind" value="0" ng-model="brew.grind" placeholder="Grind" required>
           </span>
-          <p>Grind Setting</p>
-          <input type="number" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01" class="textInput"name="grind" value="0" ng-model="brew.grind" placeholder="0" required>
         </div>
-        <div class="brew-attempt-score column-2">
+        <div class="brew-attempt-score column-1">
           <p>Water Solubility (too weak: 0, too strong: 10)</p>
-          <input type="number" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01" class="textInput" name="solubility" value="0" ng-model="brew.solubility" placeholder="0" required>
+          <input type="number" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.1" class="textInput" name="solubility" value="0" ng-model="brew.solubility" placeholder="0" required>
           <p>Flavor (too sour: 0, too bitter: 10)</p>
-          <input type="number" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01" class="textInput" name="flavor" value="0" ng-model="brew.flavor" placeholder="0" required>
+          <input type="number" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.1" class="textInput" name="flavor" value="0" ng-model="brew.flavor" placeholder="0" required>
         </div>
       </div>
       <div class="wrapper">
-        <button ng-click="addBrewAttempt(brew)">Add Brew Attempt</button>
+        <button class="button-1" ng-click="addBrewAttempt(brew)">Add Brew Attempt</button>
       </div>
     </form>
 
     <div class="brew-attempts" ng-if="hasBrewAttempts">
       <div class="row">
+        <div class="column-5">
+          <p>Attempt No.</p>
+        </div>
         <div class="column-5">
           <p>Coffee Dose</p>
         </div>
@@ -93,7 +97,7 @@
       </div>
       <div class="row" ng-repeat="attempt in brewAttempts | reverse">
         <div class="column-5">
-          {{ $index + 1 }}
+          {{ brewAttempts.length - $index }}
         </div>
         <div class="column-5">
           <p>{{attempt.coffeeDose}}</p>

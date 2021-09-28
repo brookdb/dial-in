@@ -1,10 +1,8 @@
 /*colors*/
-@adwa-purple: #603e95;
-@adwa-green: #009da1;
-@adwa-yellow: #fac22b;
-@adwa-red: #d7255d;
-@adwa-gold: #cfb53b;
-@adwa-black-background: #09091a;
+@lilac: #cba2c8;
+@mikadoY: #ffc800;
+@raisinBlack: #1e212b;
+@seashell: #fef4eb;
 
 /*widths*/
 @mobile-min: 425px;
@@ -19,6 +17,10 @@ body,html{
 	display: block;
 
 }
+.h1, .h2, .h3, h1, h2, h3 {
+    margin-top: 15px;
+    margin-bottom: 5px;
+}
 .row{
 	display: flex;
 	flex-direction: row;
@@ -30,6 +32,8 @@ body,html{
 	display: flex;
 	flex-direction: column;
 	margin-top: 88px;
+	background: @seashell;
+	color: @raisinBlack;
 }
 .mainNav
 {
@@ -50,11 +54,13 @@ body,html{
   background-color: #09091a;
   overflow-x: hidden;
 
-	a{
+	.nav-link{
+		font-family: 'Roboto Mono', monospace;
+		margin-left: 35px;
+    margin-bottom: 25px;
+		color: @raisinBlack;
 		text-decoration: none;
-		color: #cfb53b ;
 	}
-
 	a:hover, .selected{
 		color: #fff;
 	}
@@ -76,7 +82,7 @@ body,html{
 		.bar1, .bar2, .bar3 {
 			width: 35px;
 			height: 5px;
-			background-color: #cfb53b ;
+			background-color: @mikadoY;
 			margin: 6px 0;
 			transition: 0.4s;
 		}
@@ -97,7 +103,8 @@ body,html{
 
 	#title{
 		margin: 20px 0;
-		font-family: 'Courier Prime', monospace;
+		font-family: 'Roboto Mono', monospace;
+		color: @mikadoY;
 	}
 	.titleContainer{
 		display: flex;
@@ -116,7 +123,7 @@ body,html{
 	}
 	.options {
 		margin: 0 auto;
-		background: red;
+		background: @mikadoY;
 		width: 100%;
 		padding-top: 20px;
 		height: 100vh;
@@ -175,8 +182,8 @@ icon{
 		margin: 0 auto;
 	}
 	path{
-		stroke: @adwa-gold;
-		fill: @adwa-gold;
+		stroke: @mikadoY;
+		fill: @mikadoY;
 	}
 }
 .vgap{
@@ -198,7 +205,6 @@ icon{
 .column{
 	&-1{
 		width: 94%;
-		background: yellow;
 	}
 	&-2{
 		width: 45.5%;
@@ -210,11 +216,7 @@ icon{
 form{
 	padding: 5px 12px;
 }
-.buttonGroup{
-	input{
-		margin-left: 12px;
-	}
-}
+
 .textInput{
 	background: #fff;
   border: 1px solid #dfe1e5;
@@ -223,16 +225,51 @@ form{
   z-index: 3;
   height: 28px;
   margin: 8px 4px;
-  width: 182px;
-  max-width: 199px;
+	padding-left: 12px;
+	padding-right: 12px;
+  width: 100%;
 	&:hover{
 		box-shadow: 0 1px 6px rgb(32 33 36 / 28%);
-    border-color: rgba(223,225,229,0);
+    border-color: rgba(223,225,229,0) !important;
+	}
+	&:focus-visible {
+		outline: none;
+	}
+}
+.buttonGroup{
+	width: 100%;
+	display: flex;
+	input{
+		margin-right: 8px;
+		margin-left: 12px;
+	}
+}
+.button{
+	&-wrapper{
+		width: 100%;
+		display: flex;
+		justify-content: center;
+		margin: 12px 0;
+	}
+	&-1{
+		width: 100%;
+    height: 66px;
+    border: none;
+    background: @lilac;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 22px;
+    font-weight: 900;
 	}
 }
 
+
+p.inputLabel {
+	margin: 14px 0 0 12px;
+	color: @raisinBlack;
+}
+
 .brew-setting{
-	background: pink;
+	background: @lilac;
 	display: flex;
 	justify-content: space-evenly;
 	flex-wrap: wrap;
@@ -240,16 +277,17 @@ form{
 	h2{
 		width: 100%;
 		padding-left: 3%;
-		margin-top: 3px;
+		margin-top: 2px;
+		color: #fff;
 	}
 	h3{
 		margin: 5px 0px;
 	}
 	h4{
-		margin: 3px 0px;
+		margin: 2px 0px;
 	}
 	p{
-		margin: 2px 2px;
+		margin: 1.22px 2px;
 	}
 	.column-3{
 		display: flex;
@@ -264,15 +302,13 @@ form{
       font-size: 12px;
 		}
 		.wrapper{
-			display: flex;
-			justify-content: space-evenly;
+
 		}
 		.textInput{
-			width: 91px;
+			width: 87px;
 		}
 		&-score{
 			margin: 2%;
-	  	height: 500px;
   		border: 1px solid black;
 		}
 	}
